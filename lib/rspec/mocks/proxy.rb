@@ -163,6 +163,7 @@ module RSpec
 
       # @private
       def message_received(message, *args, &block)
+        return nil
         record_message_received message, *args, &block
 
         expectation = find_matching_expectation(message, *args)
