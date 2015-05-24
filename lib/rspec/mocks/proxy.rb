@@ -163,7 +163,6 @@ module RSpec
 
       # @private
       def message_received(message, *args, &block)
-        return nil
         record_message_received message, *args, &block
 
         expectation = find_matching_expectation(message, *args)
@@ -171,8 +170,8 @@ module RSpec
 
         if (stub && expectation && expectation.called_max_times?) || (stub && !expectation)
           expectation.increase_actual_received_count! if expectation && expectation.actual_received_count_matters?
-          if (expectation = find_almost_matching_expectation(message, *args))
-            expectation.advise(*args) unless expectation.expected_messages_received?
+          if (almost_matching_expectation = find_almost_matching_expectation(message, *args))
+            almost_matching_expectation.advise(*args) unless almost_matching_expectation.expected_messages_received?
           end
           stub.invoke(nil, *args, &block)
         elsif expectation
