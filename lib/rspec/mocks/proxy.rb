@@ -185,11 +185,10 @@ module RSpec
         elsif expectation
           expectation.unadvise(messages_arg_list)
           expectation.invoke(stub, *args, &block)
+        elsif almost_matching_expectation && null_object? && !almost_matching_expectation.expected_messages_received?
+          almost_matching_expectation.advise(*args)
+          raise_unexpected_message_args_error(almost_matching_expectation, [args])
         elsif almost_matching_expectation && null_object?
-          if !almost_matching_expectation.expected_messages_received?
-            almost_matching_expectation.advise(*args)
-          end
-
           raise_unexpected_message_args_error(almost_matching_expectation, [args])
         elsif almost_matching_expectation && !null_object?
           if (null_object? || !has_negative_expectation?(message))
