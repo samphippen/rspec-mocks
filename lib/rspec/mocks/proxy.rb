@@ -168,18 +168,11 @@ module RSpec
         expectation = find_matching_expectation(message, *args)
         stub = find_matching_method_stub(message, *args)
 
-        if (stub && expectation && expectation.called_max_times?)
-          if expectation.actual_received_count_matters?
+        if (stub && expectation && expectation.called_max_times? && expectation.actual_received_count_matters?)
             expectation.increase_actual_received_count!
-          end
+        end
 
-          almost_matching_expectation = find_almost_matching_expectation(message, *args)
-          if almost_matching_expectation && !almost_matching_expectation.expected_messages_received?
-            almost_matching_expectation.advise(*args)
-          end
-
-          stub.invoke(nil, *args, &block)
-        elsif (stub && !expectation)
+        if (stub)
           almost_matching_expectation = find_almost_matching_expectation(message, *args)
           if almost_matching_expectation && !almost_matching_expectation.expected_messages_received?
             almost_matching_expectation.advise(*args)
