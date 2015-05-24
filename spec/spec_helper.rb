@@ -81,6 +81,8 @@ require 'rspec/support/spec'
 RSpec.configure do |config|
   config.expose_dsl_globally = false
   config.mock_with :rspec
+
+  config.example_status_persistence_file_path = ".rspec-failures"
   config.color = true
   config.order = :random
 
