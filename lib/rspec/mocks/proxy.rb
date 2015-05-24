@@ -172,8 +172,12 @@ module RSpec
           expectation.increase_actual_received_count!
         end
 
-        if stub && ((expectation && expectation.called_max_times?) || !expectation)
+        almost_matching_expectation = nil
+        if !expectation
           almost_matching_expectation = find_almost_matching_expectation(message, *args)
+        end
+
+        if stub && ((expectation && expectation.called_max_times?) || !expectation)
           if almost_matching_expectation && !almost_matching_expectation.expected_messages_received?
             almost_matching_expectation.advise(*args)
           end
@@ -182,9 +186,9 @@ module RSpec
         elsif expectation
           expectation.unadvise(messages_arg_list)
           expectation.invoke(stub, *args, &block)
-        elsif (expectation = find_almost_matching_expectation(message, *args))
-          if null_object? && !expectation.expected_messages_received?
-            expectation.advise(*args)
+        elsif almost_matching_expectation
+          if null_object? && !almost_matching_expectation.expected_messages_received?
+            almost_matching_expectation.advise(*args)
           end
 
           if null_object? || !has_negative_expectation?(message)
