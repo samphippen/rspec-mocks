@@ -191,7 +191,7 @@ module RSpec
         elsif almost_matching_expectation && null_object?
           raise_unexpected_message_args_error(almost_matching_expectation, [args])
         elsif almost_matching_expectation && !null_object?
-          if (null_object? || !has_negative_expectation?(message))
+          if (!has_negative_expectation?(message))
             raise_unexpected_message_args_error(almost_matching_expectation, [args])
           end
         elsif (stub = find_almost_matching_stub(message, *args))
