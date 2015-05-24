@@ -182,7 +182,9 @@ module RSpec
           almost_matching_stub = find_almost_matching_stub(message, * args)
         end
 
-        hne = has_negative_expectation?(message)
+        if almost_matching_expectation?
+          hne = has_negative_expectation?(message)
+        end
 
         if stub && ((expectation && expectation.called_max_times?) || !expectation) && almost_matching_expectation && !almost_matching_expectation.expected_messages_received?
           almost_matching_expectation.advise(*args)
