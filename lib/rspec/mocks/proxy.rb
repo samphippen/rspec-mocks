@@ -189,9 +189,16 @@ module RSpec
           if !almost_matching_expectation.expected_messages_received?
             almost_matching_expectation.advise(*args)
           end
+
           raise_unexpected_message_args_error(almost_matching_expectation, [args])
-        elsif almost_matching_expectation && !has_negative_expectation?(message)
-          raise_unexpected_message_args_error(almost_matching_expectation, [args])
+        elsif almost_matching_expectation
+          if null_object? && !almost_matching_expectation.expected_messages_received?
+            almost_matching_expectation.advise(*args)
+          end
+
+          if null_object? || !has_negative_expectation?(message)
+            raise_unexpected_message_args_error(almost_matching_expectation, [args])
+          end
         elsif (stub = find_almost_matching_stub(message, *args))
           stub.advise(*args)
           raise_missing_default_stub_error(stub, [args])
