@@ -182,7 +182,7 @@ module RSpec
           almost_matching_stub = find_almost_matching_stub(message, * args)
         end
 
-        if almost_matching_expectation?
+        if almost_matching_stub
           hne = has_negative_expectation?(message)
         end
 
