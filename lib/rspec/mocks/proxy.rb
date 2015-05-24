@@ -170,9 +170,12 @@ module RSpec
 
         if (stub && expectation && expectation.called_max_times?) || (stub && !expectation)
           expectation.increase_actual_received_count! if expectation && expectation.actual_received_count_matters?
-          if (almost_matching_expectation = find_almost_matching_expectation(message, *args))
+
+          almost_matching_expectation = find_almost_matching_expectation(message, *args)
+          if almost_matching_expectation
             almost_matching_expectation.advise(*args) unless almost_matching_expectation.expected_messages_received?
           end
+
           stub.invoke(nil, *args, &block)
         elsif expectation
           expectation.unadvise(messages_arg_list)
