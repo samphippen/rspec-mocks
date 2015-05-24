@@ -190,7 +190,7 @@ module RSpec
           raise_unexpected_message_args_error(almost_matching_expectation, [args])
         elsif almost_matching_expectation && null_object?
           raise_unexpected_message_args_error(almost_matching_expectation, [args])
-        elsif almost_matching_expectation && !null_object?
+        elsif almost_matching_expectation && !null_object? && !(has_negative_expectation?(message))
           if (!has_negative_expectation?(message))
             raise_unexpected_message_args_error(almost_matching_expectation, [args])
           end
